@@ -10,8 +10,8 @@
 
 ## avoid error related to data 
 resource "local_file" "create_highest_lxc_id" {
+  content = ""
   filename = "${path.module}/highest_lxc_id.txt"
-  
 }
 
 resource "null_resource" "import_script_dependencies" {
