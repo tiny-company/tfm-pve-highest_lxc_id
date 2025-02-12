@@ -1,0 +1,6 @@
+requests
+requests_toolbelt
+openssh_wrapper
+paramiko
+proxmoxer
+python-dotenv
