@@ -6,10 +6,10 @@ A simple terraform module that get the highest LXC container ID in a proxmox nod
 
 ## Usage 
 
-- Import the module by referencing it using :
+- Import the module by referencing it in your main terraform file (`main.tf`) using :
 ```hcl
 module "pve_highest_lxc_id" {
-  source     = "git::https://github.com/<your-username>/<your-repo>.git//s3_bucket"
+  source     = "git::https://github.com/tiny-company/tfm-pve-highest_lxc_id.git"
   proxmox_api_host = var.proxmox_api_host
   proxmox_api_nodename = var.terraform_proxmox_node_name
   proxmox_api_username = var.proxmox_api_username
