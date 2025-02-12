@@ -16,6 +16,7 @@ resource "null_resource" "import_script_dependencies" {
 }
 
 resource "null_resource" "get_highest_lxc_id" {
+  triggers  =  { always_run = "${timestamp()}" }
   provisioner "local-exec" {
     command = "${path.module}/venv/bin/python ${path.module}/scripts/get_highest_lxc_id.py > ${path.module}/highest_lxc_id.txt"
     environment = {
