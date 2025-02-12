@@ -8,6 +8,12 @@
 # - terraform version : OpenTofu v1.9.0
 # ------------------------------------------------------------------
 
+## avoid error related to data 
+resource "local_file" "create_highest_lxc_id" {
+  filename = "${path.module}/highest_lxc_id.txt"
+  
+}
+
 resource "null_resource" "import_script_dependencies" {
   triggers  =  { always_run = "${timestamp()}" }
   provisioner "local-exec" {
@@ -16,6 +22,7 @@ resource "null_resource" "import_script_dependencies" {
   lifecycle {
     ignore_changes = all
   }
+  depends_on = [local_file.create_highest_lxc_id]
 }
 
 resource "null_resource" "get_highest_lxc_id" {
@@ -38,7 +45,7 @@ resource "null_resource" "get_highest_lxc_id" {
 
 data "local_file" "highest_lxc_id" {
   filename = "${path.module}/highest_lxc_id.txt"
-  depends_on = [null_resource.get_highest_lxc_id]
+  depends_on = [null_resource.get_highest_lxc_id, local_file.create_highest_lxc_id]
 }
 
 ## delete venv folder (keep clean)
@@ -47,6 +54,6 @@ resource "null_resource" "delete_file" {
   provisioner "local-exec" {
     command = "rm -rf ${path.module}/venv"
   }
-  depends_on = [null_resource.import_script_dependencies,null_resource.get_highest_lxc_id]
+  depends_on = [null_resource.import_script_dependencies, null_resource.get_highest_lxc_id]
 }
 
