@@ -60,3 +60,10 @@ proxmox_api_tokenname="token_name"
 proxmox_api_tokenvalue="0000000-00000-00000-000000-4532433"
 proxmox_api_username="proxmox_username@authentication_base"
 ```
+
+## Sources : 
+
+- [tutorial terraform module](https://developer.hashicorp.com/terraform/tutorials/modules/module)
+- [terraform module creation guide](https://developer.hashicorp.com/terraform/language/modules/develop)
+- [terraform module source](https://developer.hashicorp.com/terraform/language/modules/sources#github)
+- [terraform module git private repo source](https://medium.com/@dipandergoyal/terraform-using-private-git-repo-as-module-source-d20d8cec7c5)
