@@ -8,7 +8,7 @@
 # - terraform version : OpenTofu v1.9.0
 # ------------------------------------------------------------------
 
-## avoid error related to data 
+## avoid error related to file missing when read by data 
 resource "local_file" "create_highest_lxc_id" {
   content = ""
   filename = "${path.module}/highest_lxc_id.txt"
@@ -40,7 +40,7 @@ resource "null_resource" "get_highest_lxc_id" {
   lifecycle {
     ignore_changes = all
   }
-  depends_on = [null_resource.import_script_dependencies]
+  depends_on = [local_file.create_highest_lxc_id, null_resource.import_script_dependencies]
 }
 
 data "local_file" "highest_lxc_id" {
@@ -48,7 +48,7 @@ data "local_file" "highest_lxc_id" {
   depends_on = [null_resource.get_highest_lxc_id, local_file.create_highest_lxc_id]
 }
 
-## delete venv folder (keep clean)
+## delete venv folder (keep env clean)
 resource "null_resource" "delete_file" {
   triggers  =  { always_run = "${timestamp()}" }
   provisioner "local-exec" {
