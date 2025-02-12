@@ -9,14 +9,12 @@
 # ------------------------------------------------------------------
 
 resource "null_resource" "import_script_dependencies" {
-  triggers  =  { always_run = "${timestamp()}" }
   provisioner "local-exec" {
     command = "virtualenv -p ${var. python_version} ${path.module}/venv && . ${path.module}/venv/bin/activate && pip install -r ${path.module}/scripts/requirements.txt"
   }
 }
 
 resource "null_resource" "get_highest_lxc_id" {
-  triggers  =  { always_run = "${timestamp()}" }
   provisioner "local-exec" {
     command = "${path.module}/venv/bin/python ${path.module}/scripts/get_highest_lxc_id.py > ${path.module}/highest_lxc_id.txt"
     environment = {
@@ -29,7 +27,12 @@ resource "null_resource" "get_highest_lxc_id" {
   depends_on = [null_resource.import_script_dependencies]
 }
 
+locals {
+  file_exists = fileexists("${path.module}/highest_lxc_id.txt")
+}
+
 data "local_file" "highest_lxc_id" {
+  count  = local.file_exists ? 1 : 0
   filename = "${path.module}/highest_lxc_id.txt"
   depends_on = [null_resource.get_highest_lxc_id]
 }
