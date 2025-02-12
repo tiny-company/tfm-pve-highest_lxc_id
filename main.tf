@@ -19,7 +19,7 @@ resource "null_resource" "import_script_dependencies" {
 
 resource "null_resource" "get_highest_lxc_id" {
   provisioner "local-exec" {
-    command = "${path.module}/venv/bin/python ${path.module}/scripts/get_highest_lxc_id.py > ${path.module}/highest_lxc_id.txt"
+    command = "${path.module}/venv/bin/python ${path.module}/scripts/get_highest_lxc_id.py > ${path.root}/highest_lxc_id.txt"
     environment = {
       PROXMOX_API_HOST = "${var.proxmox_api_host}"
       PROXMOX_API_USERNAME = "${var.proxmox_api_username}"
@@ -34,7 +34,7 @@ resource "null_resource" "get_highest_lxc_id" {
 }
 
 data "local_file" "highest_lxc_id" {
-  filename = "${path.module}/highest_lxc_id.txt"
+  filename = "${path.root}/highest_lxc_id.txt"
   depends_on = [null_resource.get_highest_lxc_id]
 }
 
